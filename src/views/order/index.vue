@@ -1,54 +1,33 @@
 <template>
-  <div class="product-container">
+  <div class="order-container">
     <img
       src="http://www.zhongyunwenhua.cn/img/banner/2.jpg"
       class="bg_img"
       alt=""
     />
-    <div class="container">
-      <div v-for="item in list" :key="item.id">
-        <div></div>
-        <div class="list-item flex">
-          <img :src="item.icon" />
-          <div class="desc-area">
-            <div class="title">{{ item.name }}</div>
-            <div class="type">版权类型：{{ item.type }}</div>
-            <div class="description">详情：{{ item.description }}</div>
-            <div class="price">版权费：{{ item.price }}元</div>
-            <div class="btn-buy" @click="buyProduct(item.id)">购买版权</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    订单页面
   </div>
 </template>
 
 <script>
 import { productList } from '@/api/product';
-import { createOrder } from '@/api/order';
-import { mapState } from 'vuex';
 
 export default {
-  name: 'Index',
+  name: 'Order',
   data() {
     return {
       list: []
     };
   },
-  computed: {
-    ...mapState({
-      userInfo: state => state.user.userInfo,
-      token: state => state.user.token
-    })
-  },
+
   created() {
     this.getProductList();
   },
   methods: {
     async getProductList() {
-      const { data } = await productList();
+      const result = await productList();
       const list = [];
-      data.forEach(item => {
+      result.data.forEach(item => {
         const products = item.foods.map(i => {
           return {
             ...i,
@@ -58,31 +37,6 @@ export default {
         list.push(products);
       });
       this.list = list.flat();
-    },
-    async buyProduct(productId) {
-      if (!this.userInfo.id) {
-        this.$message('您还没有登录，请先登录');
-        this.$router.push('/login');
-        return;
-      }
-      const result = await createOrder({
-        userId: this.userInfo.id,
-        phone: this.userInfo.phone,
-        productId
-      });
-
-      if (result.code === 0) {
-        this.$message({
-          type: 'success',
-          message: '下单成功，订单处理中'
-        });
-        this.$router.push('/order');
-      } else {
-        this.$message({
-          type: 'success',
-          message: result.msg
-        });
-      }
     }
   }
 };
@@ -90,7 +44,7 @@ export default {
 
 <style lang="scss">
 /* reset element-ui css */
-.product-container {
+.order-container  {
   .bg_img {
     width: 100%;
     height: auto;

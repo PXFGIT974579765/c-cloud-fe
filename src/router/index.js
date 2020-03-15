@@ -20,6 +20,12 @@ export const menuRoutes = [
     active: false
   },
   {
+    path: '/order',
+    title: '订单中心',
+    component: () => import('@/views/order/index'),
+    active: false
+  },
+  {
     path: '/login',
     title: '登录',
     component: () => import('@/views/login/index'),

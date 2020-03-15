@@ -7,3 +7,10 @@ export function productList(data) {
   });
 }
 
+export function createOrder(data) {
+  return request({
+    url: 'order/buyer/order/create',
+    method: 'post',
+    data
+  });
+}
