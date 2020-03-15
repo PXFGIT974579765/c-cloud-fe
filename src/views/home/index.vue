@@ -1,7 +1,10 @@
 <template>
   <div class="index-container">
-
-    <img src="http://www.zhongyunwenhua.cn/img/slider/slider1.jpg" class="bg_img" alt="">
+    <img
+      src="http://www.zhongyunwenhua.cn/img/slider/slider1.jpg"
+      class="bg_img"
+      alt=""
+    />
   </div>
 </template>
 
@@ -9,9 +12,7 @@
 export default {
   name: 'Index',
   data() {
-    return {
-
-    };
+    return {};
   },
 
   created() {
