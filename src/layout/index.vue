@@ -8,8 +8,7 @@
           :key="route.path"
           :class="{ active: route.active, menu: true }"
           :to="route.path"
-          >{{ route.title }}</router-link
-        >
+        >{{ (userInfo.username&&(route.path==='/login'))?`${userInfo.username}`: route.title }}</router-link>
         <!-- <div>商品信息</div>
         <div>登录</div> -->
       </div>
@@ -37,7 +36,7 @@ export default {
   },
   computed: {
     ...mapState({
-      sidebar: state => state.app.sidebar
+      userInfo: state => state.user.userInfo
     })
   },
   watch: {

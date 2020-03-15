@@ -24,6 +24,7 @@ const actions = {
         .then(response => {
           const { data } = response;
           commit('SET_TOKEN', data.token);
+          commit('SET_USER_INFO', data);
           setToken(data.token);
           resolve();
         })

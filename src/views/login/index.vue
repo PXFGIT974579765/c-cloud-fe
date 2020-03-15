@@ -59,7 +59,8 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >登陆</el-button>
+        >登陆</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -88,9 +89,7 @@ export default {
         password: '123456'
       },
       loginRules: {
-        phone: [
-          { required: true, trigger: 'blur', validator: validatePhone }
-        ],
+        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
         ]
