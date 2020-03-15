@@ -3,9 +3,15 @@
     <div class="header flex">
       <div class="title">中云文化版权交易平台</div>
       <div class="btn-menu flex">
-        <div>首页</div>
-        <div>商品信息</div>
-        <div>登录</div>
+        <router-link
+          v-for="route in menuRoutes"
+          :key="route.path"
+          :class="{ active: route.active, menu: true }"
+          :to="route.path"
+          >{{ route.title }}</router-link
+        >
+        <!-- <div>商品信息</div>
+        <div>登录</div> -->
       </div>
     </div>
     <app-main />
@@ -13,6 +19,7 @@
 </template>
 
 <script>
+import { menuRoutes } from '@/router';
 import { AppMain } from './components';
 import ResizeMixin from './mixin/ResizeHandler';
 import { mapState } from 'vuex';
@@ -23,12 +30,35 @@ export default {
     AppMain
   },
   mixins: [ResizeMixin],
+  data() {
+    return {
+      menuRoutes
+    };
+  },
   computed: {
     ...mapState({
       sidebar: state => state.app.sidebar
     })
   },
-  methods: {}
+  watch: {
+    $route(to, from) {
+      this.initMenuStyle(to.path);
+    }
+  },
+  created() {
+    this.initMenuStyle(this.$route.path);
+  },
+  methods: {
+    initMenuStyle(path) {
+      const newMenu = this.menuRoutes.map(item => {
+        return {
+          ...item,
+          active: item.path === path
+        };
+      });
+      this.menuRoutes = newMenu;
+    }
+  }
 };
 </script>
 
@@ -59,8 +89,11 @@ export default {
       line-height: 60px;
       font-size: 20px;
 
-      div {
+      .menu {
         margin-left: 20px;
+      }
+      .active {
+        border-bottom: 3px solid #fff;
       }
     }
   }

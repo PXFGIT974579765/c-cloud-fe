@@ -6,6 +6,21 @@ Vue.use(Router);
 /* Layout */
 import Layout from '@/layout';
 
+export const menuRoutes = [
+  {
+    path: '/home',
+    title: '首页',
+    component: () => import('@/views/home/index'),
+    active: false
+  },
+  {
+    path: '/login',
+    title: '登录',
+    component: () => import('@/views/login/index'),
+    active: false
+  }
+]
+
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -38,16 +53,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/home',
     children: [
-      {
-        path: '/home',
-        component: () => import('@/views/home/index'),
-        hidden: true
-      },
-      {
-        path: '/login',
-        component: () => import('@/views/login/index'),
-        hidden: true
-      }
+      ...menuRoutes
     ]
   }
 ];
