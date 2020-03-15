@@ -1,15 +1,15 @@
 import request from '@/utils/request';
 
-export function productList(data) {
+export function userOrders(userId) {
   return request({
-    url: '/product/product/list',
+    url: `/order/buyer/list/${userId}`,
     method: 'get'
   });
 }
 
 export function createOrder(data) {
   return request({
-    url: 'order/buyer/order/create',
+    url: '/order/buyer/create',
     method: 'post',
     data
   });

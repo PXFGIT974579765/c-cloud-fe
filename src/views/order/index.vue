@@ -5,12 +5,33 @@
       class="bg_img"
       alt=""
     />
-    订单页面
+    <div class="container">
+      <el-table :data="list" style="width: 100%" stripe border>
+        <el-table-column prop="orderId" label="订单id" width="360" />
+        <el-table-column prop="orderAmount" label="订单金额" />
+        <el-table-column prop="orderStatusStr" label="订单状态" width="180" />
+        <el-table-column prop="payStatusStr" label="订单支付状态" />
+        <el-table-column prop="createTime" label="创建订单时间">
+          <template slot-scope="scope">
+            {{ parseDate(scope.row.createTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="120">
+          <template slot-scope="scope">
+            <el-button type="text" size="small">
+              查看详情
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
 <script>
-import { productList } from '@/api/product';
+import { userOrders } from '@/api/order';
+import { parseTime } from '@/utils';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Order',
@@ -19,24 +40,27 @@ export default {
       list: []
     };
   },
-
+  computed: {
+    ...mapState({
+      userInfo: state => state.user.userInfo,
+      token: state => state.user.token
+    })
+  },
   created() {
-    this.getProductList();
+    this.getOrders();
   },
   methods: {
-    async getProductList() {
-      const result = await productList();
-      const list = [];
-      result.data.forEach(item => {
-        const products = item.foods.map(i => {
-          return {
-            ...i,
-            type: item.name
-          };
-        });
-        list.push(products);
-      });
-      this.list = list.flat();
+    async getOrders() {
+      if (!this.userInfo.id) {
+        this.$message('您还没有登录，请先登录');
+        this.$router.push('/login');
+        return;
+      }
+      const { data } = await userOrders(this.userInfo.id);
+      this.list = data;
+    },
+    parseDate(number) {
+      return parseTime(number);
     }
   }
 };
@@ -44,12 +68,13 @@ export default {
 
 <style lang="scss">
 /* reset element-ui css */
-.order-container  {
+.order-container {
   .bg_img {
     width: 100%;
     height: auto;
   }
   .container {
+    padding-top: 40px;
     padding-left: 300px;
     padding-right: 300px;
     padding-bottom: 40px;
